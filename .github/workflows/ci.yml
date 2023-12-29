@@ -36,26 +36,6 @@
             cache-from: type=gha
             cache-to: type=gha,mode=max
             platforms: linux/amd64
-
-    test-unit:
-      name: Unit testing in Docker
-      needs: [build-test-image]
-      runs-on: ubuntu-latest
-  
-      permissions:
-        packages: read
-        
-      steps:
-        
-        - name: Login to ghcr.io
-          uses: docker/login-action@v3
-          with:
-            registry: ghcr.io
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
-        
-        - name: Run unit tests
-          run: docker run --rm ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID" make test
    
     linter:
       name: Linter
@@ -117,6 +97,65 @@
           with:
             sarif_file: 'trivy-results.sarif' 
     
+    test-unit:
+      name: Unit testing in Docker
+      needs: [build-test-image]
+      runs-on: ubuntu-latest
+  
+      permissions:
+        packages: read
+        
+      steps:
+        
+        - name: Login to ghcr.io
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+        
+        - name: Run unit tests
+          run: docker run --rm ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID" make test
+
+    test-k3d:
+      name: Test deployment in Kubernetes
+      needs: [build-test-image]
+      runs-on: ubuntu-latest
+  
+      permissions:
+        packages: read
+  
+      steps:
+  
+        - name: Checkout
+          uses: actions/checkout@v4
+  
+        - name: Login to ghcr.io
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+  
+        - uses: AbsaOSS/k3d-action@v2
+          with:
+            cluster-name: "test-cluster-1"
+            args: >-
+              --agents 1
+              --no-lb
+              --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
+        
+        - name: Smoke test deployment in k3d Kubernetes
+          run: |
+            kubectl create secret docker-registry regcred \
+              --docker-server=https://ghcr.io \
+              --docker-username=${{ github.actor }} \
+              --docker-password=${{ secrets.GITHUB_TOKEN }}
+            export TESTING_IMAGE=ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID"
+            envsubst < manifests/test-deployment.yml  | kubectl apply -f -
+            kubectl rollout status deployment myapp
+            kubectl exec deploy/myapp -- curl --fail localhost
+
     build-final-image:
       name: Build final image
       needs: [test-unit, linter, scan-image]
