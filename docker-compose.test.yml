@@ -1,0 +1,3 @@
+services:
+  go-calc:
+    image: "${TESTING_IMAGE}"
