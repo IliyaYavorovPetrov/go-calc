@@ -8,7 +8,7 @@
   
   jobs:
     build-test-image:
-      name: Build Test Image
+      name: Build test image
       runs-on: ubuntu-latest
   
       permissions:
@@ -26,7 +26,7 @@
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
         
-        - name: Build and Push to GHCR
+        - name: Build and push to GHCR
           uses: docker/build-push-action@v5
           with:
             push: true
@@ -134,18 +134,22 @@
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-        - name: Bump version and push tag
-          id: tag_version
-          uses: mathieudutour/github-tag-action@v6.1
+        - name: Docker Metadata for final image build
+          id: docker_meta
+          uses: docker/metadata-action@v5
           with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+            images: iypetrov/go-calc
+            flavor: |
+              latest=false
+            tags: |
+              type=semver,enable=true,priority=900,pattern={{version}}
 
-        - name: Build and Push to Docker Hub
+        - name: Build and push to Docker Hub
           uses: docker/build-push-action@v5
           with:
             push: true
-            tags: ${{ steps.tag_version.outputs.new_tag }}
-            labels: ${{ steps.tag_version.outputs.new_tag }}
+            tags: ${{ steps.docker_meta.outputs.tags }}
+            labels: ${{ steps.docker_meta.outputs.labels }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
             platforms: linux/amd64,linux/arm64,linux/arm/v7
@@ -168,11 +172,11 @@
             body: |
               Docker image tag(s) pushed:
               ```text
-              ${{ steps.tag_version.outputs.new_tag }}
+              ${{ steps.docker_meta.outputs.tags }}
               ```
 
               Labels added to images:
               ```text
-              ${{ steps.tag_version.outputs.new_tag }}
+              ${{ steps.docker_meta.outputs.labels }}
               ```
             edit-mode: replace
