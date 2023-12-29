@@ -82,6 +82,16 @@ func AppRouter() http.Handler {
 		writeResult(w, result)
 	})
 	
+	mux.HandleFunc("/and", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.And(getNumbers(r))
+		writeResult(w, result)
+	})
+
 	mux.HandleFunc("/xor", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
