@@ -8,7 +8,7 @@
   
   jobs:
     build-test-image:
-      name: Build Image for Testing
+      name: Build Test Image
       runs-on: ubuntu-latest
   
       permissions:
@@ -37,7 +37,27 @@
           with:
             push: true
             tags: ghcr.io/iypetrov/go-calc:${{ github.run_id }}
-            target: test
             cache-from: type=gha
             cache-to: type=gha,mode=max
-            platforms: linux/amd64 
+            platforms: linux/amd64
+
+    test-unit:
+      name: Unit tests in Docker
+      needs: [build-test-image]
+      runs-on: ubuntu-latest
+  
+      permissions:
+        packages: read
+        
+      steps:
+        
+        - name: Login to ghcr.io
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+        
+        - name: Unit Testing in Docker
+          run: docker run --rm ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID" echo "make test"
+    
