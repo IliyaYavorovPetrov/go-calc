@@ -81,6 +81,16 @@ func AppRouter() http.Handler {
 		result := math.Mul(getNumbers(r))
 		writeResult(w, result)
 	})
+	
+	mux.HandleFunc("/xor", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.Xor(getNumbers(r))
+		writeResult(w, result)
+	})
 
 	return mux
 }
