@@ -80,7 +80,13 @@
            export TESTING_IMAGE=ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID"
            echo Testing image: "$TESTING_IMAGE"
            docker compose -f docker-compose.test.yml up
-           curl http://localhost:8080/healthcheck
+           http_status=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health-check)
+           if [ $http_status -ge 200 ] && [ $http_status -lt 300 ]; then
+              exit 0
+           else
+              exit 1
+           fi
+        
         
     scan-image:
       name: Scan image for vulnerabilities
