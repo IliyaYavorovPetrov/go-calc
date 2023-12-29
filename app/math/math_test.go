@@ -37,3 +37,20 @@ func TestSub(t *testing.T) {
 		}
 	}
 }
+
+func TestMul(t *testing.T) {
+	testCases := []struct {
+		numbers  []int
+		expected int
+	}{
+		{[]int{2, 3}, 6},
+		{[]int{1, 2, 3, 4, 5}, 120},
+	}
+
+	for _, tc := range testCases {
+		result := Mul(tc.numbers)
+		if result != tc.expected {
+			t.Errorf("Mul(%v) returned %d, expected %d", tc.numbers, result, tc.expected)
+		}
+	}
+}

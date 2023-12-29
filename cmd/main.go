@@ -71,9 +71,20 @@ func AppRouter() http.Handler {
 		result := math.Sub(getNumbers(r))
 		writeResult(w, result)
 	})
+	
+	mux.HandleFunc("/mul", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.Mul(getNumbers(r))
+		writeResult(w, result)
+	})
 
 	return mux
 }
+
 
 func main() {
 	addr := net.JoinHostPort("", "8080")
