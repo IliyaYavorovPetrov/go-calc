@@ -59,6 +59,16 @@ func AppRouter() http.Handler {
 		writeResult(w, result)
 	})
 
+	mux.HandleFunc("/sub", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.Sub(getNumbers(r))
+		writeResult(w, result)
+	})
+
 	return mux
 }
 

@@ -8,3 +8,20 @@ func Sum(numbers []int) int {
 
 	return result
 }
+
+func Sub(numbers []int) int {
+	result := 0
+	counter := 0
+
+	for _, num := range numbers {
+		if counter == 0 {
+			result = num
+		} else {
+			result -= num
+		}
+
+		counter++
+	}
+
+	return result
+}
