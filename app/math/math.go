@@ -25,3 +25,12 @@ func Sub(numbers []int) int {
 
 	return result
 }
+
+func Mul(numbers []int) int {
+	result := 1
+	for _, num := range numbers {
+		result *= num
+	}
+
+	return result
+}
