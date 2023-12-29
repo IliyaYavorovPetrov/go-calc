@@ -157,7 +157,9 @@
           uses: docker/build-push-action@v5
           with:
             push: true
-            tags: ${{ steps.docker_meta.outputs.tags }}, "latest"
+            tags: |
+              ${{ steps.docker_meta.outputs.tags }}
+              iypetrov/go-calc:latest
             labels: ${{ steps.docker_meta.outputs.labels }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
