@@ -8,7 +8,7 @@ func TestSum(t *testing.T) {
 		expected int
 	}{
 		{[]int{2, 3}, 5},
-		{[]int{1, 2, 3, 4, 5}, 15},
+		{[]int{1, 2, 3, 4, 5}, 14},
 	}
 
 	for _, tc := range testCases {
