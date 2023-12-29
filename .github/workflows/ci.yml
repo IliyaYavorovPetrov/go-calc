@@ -78,7 +78,7 @@
             password: ${{ secrets.GITHUB_TOKEN }}
   
         - name: Pull image to scan
-          run: docker pull ghcr.io/iypetrov/go-cacl:"$GITHUB_RUN_ID"
+          run: docker pull ghcr.io/iypetrov/go-calc:"$GITHUB_RUN_ID"
           
         - name: Run Trivy for all CVEs (non-blocking)
           uses: aquasecurity/trivy-action@master
