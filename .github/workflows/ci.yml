@@ -119,8 +119,8 @@
 
     build-final-image:
       name: Build final image
-      needs: [linter, scan-image, test-unit]
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      needs: [linter, scan-image, test-unit]
       runs-on: ubuntu-latest
 
       permissions:
