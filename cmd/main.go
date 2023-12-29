@@ -34,7 +34,10 @@ func writeResult(w http.ResponseWriter, result int) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(responseJSON)
+	_, err = w.Write(responseJSON)
+	if err != nil {
+		return
+	}
 }
 
 func AppRouter() http.Handler {
