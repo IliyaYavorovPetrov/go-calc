@@ -54,3 +54,19 @@ func TestMul(t *testing.T) {
 		}
 	}
 }
+
+func TestXor(t *testing.T) {
+	testCases := []struct {
+		numbers  []int
+		expected int
+	}{
+		{[]int{60, 13}, 49},
+	}
+
+	for _, tc := range testCases {
+		result := Xor(tc.numbers)
+		if result != tc.expected {
+			t.Errorf("Xor(%v) returned %d, expected %d", tc.numbers, result, tc.expected)
+		}
+	}
+}
