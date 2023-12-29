@@ -29,4 +29,4 @@
             push: true
             tags: iypetrov/go-calc:${{ github.run_id }}
             # target: test
-            # platforms: linux/amd64
+            platforms: linux/amd64
