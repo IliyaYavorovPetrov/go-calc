@@ -164,17 +164,20 @@
           run: |
            docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }}
 
-        - name: Run k6 load test
-          uses: grafana/k6-action@v0.3.1
-          with:
-            filename: testing/load/sum-base.js
-          env:
-            API_BASE_URL: http://localhost:8080
-
-        - name: Stop temp container
+        - name: Install K6
           run: |
-           docker run $(docker ps -aq)
-          
+            curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | \
+              tar xvz --strip-components 1
+        - name: Install K6 packages
+          run: |
+            npm ci
+        - name: Start K6 server and run tests
+          run: |
+            export API_BASE_URL=http://localhost:8080
+            docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
+            && npm start & npx wait-on http://localhost:8080 \
+            && ./k6 run testing/load/sum-base.js \
+            && docker stop $(docker ps -q)
 
     build-final-image:
       name: Build deploy image
