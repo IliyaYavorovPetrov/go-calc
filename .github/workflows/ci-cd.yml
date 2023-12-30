@@ -142,7 +142,7 @@
 
         - name: Curl health check endpoint
           run: |
-           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:${{ github.run_id }} \
+           docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
               && for i in {1..3}; do curl -f http://localhost:8080/health-check && sleep 5; done \
               && docker stop $(docker ps -q)
        
