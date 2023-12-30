@@ -71,6 +71,22 @@ func TestAnd(t *testing.T) {
 	}
 }
 
+func TestOr(t *testing.T) {
+	testCases := []struct {
+		numbers  []int
+		expected int
+	}{
+		{[]int{60, 13}, 61},
+	}
+
+	for _, tc := range testCases {
+		result := Or(tc.numbers)
+		if result != tc.expected {
+			t.Errorf("Or(%v) returned %d, expected %d", tc.numbers, result, tc.expected)
+		}
+	}
+}
+
 func TestXor(t *testing.T) {
 	testCases := []struct {
 		numbers  []int

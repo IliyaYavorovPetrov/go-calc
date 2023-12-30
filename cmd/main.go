@@ -71,7 +71,7 @@ func AppRouter() http.Handler {
 		result := math.Sub(getNumbers(r))
 		writeResult(w, result)
 	})
-	
+
 	mux.HandleFunc("/mul", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -81,7 +81,7 @@ func AppRouter() http.Handler {
 		result := math.Mul(getNumbers(r))
 		writeResult(w, result)
 	})
-	
+
 	mux.HandleFunc("/and", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -89,6 +89,16 @@ func AppRouter() http.Handler {
 		}
 
 		result := math.And(getNumbers(r))
+		writeResult(w, result)
+	})
+
+	mux.HandleFunc("/or", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.Or(getNumbers(r))
 		writeResult(w, result)
 	})
 
@@ -104,7 +114,6 @@ func AppRouter() http.Handler {
 
 	return mux
 }
-
 
 func main() {
 	addr := net.JoinHostPort("", "8080")
