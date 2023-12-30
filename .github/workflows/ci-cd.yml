@@ -145,7 +145,7 @@
 
         - name: Curl health check endpoint
           run: |
-           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:${{ steps.docker_meta.outputs.tags }} && curl -f http://localhost:8080/health-check && docker stop $(docker ps -q)
+           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:latest && curl -f http://localhost:8080/health-check && docker stop $(docker ps -q)
 
 
 
