@@ -160,21 +160,14 @@
         - name: Checkout
           uses: actions/checkout@v4
         
-        - name: Install K6
-          run: |
-            curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | \
-              tar xvz --strip-components 1
-
-        - name: Install K6 packages
-          run: |
-            npm install
-
-        - name: Start K6 server and run tests
+        - name: Set up K6
+          uses: grafana/k6-action@v0.3.1
+        
+        - name: Run load test with K6
           run: |
             export API_BASE_URL=http://localhost:8080
             docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
-            && npm start & npx wait-on http://localhost:8080 \
-            && ./k6 run testing/load/sum-base.js \
+            && k6 run testing/load/sum-base.js \
             && docker stop $(docker ps -q)
 
     build-final-image:

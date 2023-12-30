@@ -4,6 +4,10 @@ export let options = {
   insecureSkipTLSVerify: true,
   noConnectionReuse: false,
   stages: [{ duration: "10s", target: 100 }],
+  thresholds: {
+    failed_requests: ["rate<=0"],
+    http_req_duration: ["p(95)<500"],
+  },
 };
 
 export default function () {
