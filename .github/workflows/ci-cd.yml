@@ -170,7 +170,7 @@
             platforms: linux/amd64
 
     kube-deploy:
-        name: Build final image
+        name: Deploy to K8s
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         needs: [build-final-image]
         runs-on: ubuntu-latest
@@ -203,4 +203,4 @@
         - name: Deploy to K8s
           run: |
             export FINAL_IMAGE_NAME=${{ env.IMAGE_NAME }}:1.0.3
-            kubectl apply -f manifests/application.yml
+            cat manifests/application.yml | envsubst | kubectl apply -f -
