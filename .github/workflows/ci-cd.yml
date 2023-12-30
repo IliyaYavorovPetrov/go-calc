@@ -130,10 +130,22 @@
         packages: read
         
       steps:
+        - name: Checkout
+          uses: actions/checkout@v4
         
+        - name: Docker metadata
+          id: docker_meta
+          uses: docker/metadata-action@v5
+          with:
+            images: ${{ env.IMAGE_NAME }}
+            flavor: |
+              latest=false
+            tags: |
+              type=semver,pattern={{version}}
+
         - name: Curl health check endpoint
           run: |
-           docker run --rm -d -p 8080:80 your_image_name && curl -f http://localhost:8080/health-check && docker stop $(docker ps -q)
+           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:${{ steps.docker_meta.outputs.tags }} && curl -f http://localhost:8080/health-check && docker stop $(docker ps -q)
 
 
 
