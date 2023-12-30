@@ -37,3 +37,6 @@ bin/
 
 # Go workspace file
 go.work
+
+# K8s
+.kube/
