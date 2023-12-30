@@ -84,7 +84,7 @@
             password: ${{ secrets.GITHUB_TOKEN }}
   
         - name: Pull image to scan
-          run: docker pull ghcr.io/${{ env.IMAGE_NAME }}:"$GITHUB_RUN_ID"
+          run: docker pull ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }}
           
         - name: Run Trivy for all CVEs and report
           uses: aquasecurity/trivy-action@master
@@ -119,7 +119,7 @@
             password: ${{ secrets.GITHUB_TOKEN }}
         
         - name: Run unit tests
-          run: docker run --rm ghcr.io/${{ env.IMAGE_NAME }}:"$GITHUB_RUN_ID" make test
+          run: docker run --rm ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} make test
 
     test-health-check:
       name: Curl health check endpoint
@@ -142,7 +142,7 @@
 
         - name: Curl health check endpoint
           run: |
-           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:"$GITHUB_RUN_ID" \
+           docker run --rm -d -p 8080:8080 ${{ env.IMAGE_NAME }}:${{ github.run_id }} \
               && for i in {1..3}; do curl -f http://localhost:8080/health-check && sleep 5; done \
               && docker stop $(docker ps -q)
        
