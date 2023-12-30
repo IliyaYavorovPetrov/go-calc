@@ -160,18 +160,11 @@
         - name: Checkout
           uses: actions/checkout@v4
         
-        - name: Set up K6
-          uses: grafana/k6-action@v0.3.1
-          with:
-            filename: testing/load/sum-base.js 
-          env:
-            API_BASE_URL: http://localhost:8080
-        
         - name: Run load test with K6
           run: |
             export API_BASE_URL=http://localhost:8080
             docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
-            && k6 run testing/load/sum-base.js \
+            && docker run --rm grafana/k6:latest k6 run testing/load/sum-base.js \
             && docker stop $(docker ps -q)
 
     build-final-image:
