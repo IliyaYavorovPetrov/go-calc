@@ -163,7 +163,7 @@
         - name: Run load test with K6
           run: |
             export API_BASE_URL=http://localhost:8080
-            docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
+            docker run -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
             && docker run --rm grafana/k6:latest k6 run testing/load/sum-base.js \
             && docker stop $(docker ps -q)
 
