@@ -278,7 +278,7 @@ jobs:
                    "fields": [
                      {
                        "title": "Status",
-                       "short": true,
+                       "short": false,
                        "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished"
                      }
                    ]
