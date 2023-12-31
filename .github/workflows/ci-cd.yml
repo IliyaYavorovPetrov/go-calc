@@ -274,13 +274,12 @@ jobs:
             {
                "attachments": [
                  {
-                   "pretext": "Deployment of finished",
                    "color": "28a745",
                    "fields": [
                      {
                        "title": "Status",
                        "short": true,
-                       "value": "Completed"
+                       "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished"
                      }
                    ]
                  }
