@@ -252,7 +252,8 @@
                     "color": "28a745",
                     "fields": [
                       {
-                        "short": false,
+                        "title": "Overview"
+                        "short": true,
                         "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished with ${{ job.status }}",
                       }
                     ]
