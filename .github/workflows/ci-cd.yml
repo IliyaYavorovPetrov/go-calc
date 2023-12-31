@@ -247,16 +247,13 @@
           with:
             payload: |
               {
-                "text": "Deployment finished",
                 "attachments": [
                   {
-                    "pretext": "Deployment finished",
                     "color": "28a745",
                     "fields": [
                       {
-                        "title": "Status",
-                        "short": true,
-                        "value": "Completed"
+                        "short": false,
+                        "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished with <status>",
                       }
                     ]
                   }
