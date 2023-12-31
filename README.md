@@ -92,7 +92,7 @@ In this project, the **CI/CD** pipeline is divided into five phases:
    awk '{print $1}' | \
    tail -n +2 | \
    while read -r pod; do
-      echo "Pod: $pod"
+      echo "Pod:   $pod"
       kubectl describe pod "$pod" | grep Image: | awk '{print "Image: " $2}' && echo
    done
    ```
