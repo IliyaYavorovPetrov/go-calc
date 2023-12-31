@@ -241,16 +241,40 @@ jobs:
           export FINAL_IMAGE_NAME=${{ steps.docker_meta.outputs.tags }}
           cat manifests/application.yml | envsubst | kubectl apply -f -
 
+  slack-notification:
+    name: Send Slack alert
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: [ kube-deploy ]
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      pull-requests: write
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Docker metadata
+        id: docker_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          flavor: |
+            latest=false
+          tags: |
+            type=semver,pattern={{version}}
+
       - name: Send Slack notification
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
             {
-               "text": "Deployment finished",
                "attachments": [
                  {
-                   "pretext": "Deployment finished",
+                   "pretext": "Deployment of finished",
                    "color": "28a745",
                    "fields": [
                      {
