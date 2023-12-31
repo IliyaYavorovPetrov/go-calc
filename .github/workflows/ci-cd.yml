@@ -279,7 +279,7 @@ jobs:
                      {
                        "title": "Status",
                        "short": true,
-                       "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished"
+                       "value": "${{ steps.docker_meta.outputs.tags }} is deployed"
                      }
                    ]
                  }
