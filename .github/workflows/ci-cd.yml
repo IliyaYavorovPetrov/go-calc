@@ -250,10 +250,11 @@
                 "attachments": [
                   {
                     "color": "28a745",
+                    "color": "${{ job.status == 'success' ? '28a745' : 'd9534f' }}",
                     "fields": [
                       {
                         "short": false,
-                        "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished with <status>",
+                        "value": "Deployment of ${{ steps.docker_meta.outputs.tags }} finished with ${{ job.status }}",
                       }
                     ]
                   }
