@@ -73,7 +73,7 @@ In this project, the **CI/CD** pipeline is divided into five phases:
 
 ## Hints
 
-- To test the if the app is working on production:
+- To test if the app is working on production:
    ```
    curl -X POST \
    -d '[1, 2, 3, 4, 5]' \
