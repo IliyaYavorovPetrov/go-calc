@@ -141,7 +141,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Curl health check endpoint
+      - name: Run K6 tests
         run: |
           docker network create test-network \
              && docker run --rm -d --name app --network test-network -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
