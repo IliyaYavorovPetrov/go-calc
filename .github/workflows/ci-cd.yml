@@ -143,9 +143,9 @@ jobs:
 
       - name: Run K6 tests
         run: |
-          docker network create test-network \
-             docker run --rm -d --name app --network test-network -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
-             docker run --network test-network --rm -i grafana/k6 run - <testing/load/sum.js
+          docker network create test-network ; \
+          docker run --rm -d --name app --network test-network -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} ; \
+          docker run --network test-network --rm -i grafana/k6 run - <testing/load/sum.js
 
   test-health-check:
     name: Curl health check endpoint
@@ -169,8 +169,8 @@ jobs:
 
       - name: Curl health check endpoint
         run: |
-          docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
-             for i in {1..3}; do curl -f http://localhost:8080/health-check && sleep 5; done \
+          docker run --rm -d -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} ; \
+          for i in {1..3}; do curl -f http://localhost:8080/health-check && sleep 5 ; done \
 
   build-final-image:
     name: Build deploy image
