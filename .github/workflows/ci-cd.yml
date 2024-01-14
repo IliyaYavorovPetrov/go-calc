@@ -146,7 +146,6 @@ jobs:
           docker network create test-network \
              && docker run --rm -d --name app --network test-network -p 8080:8080 ghcr.io/${{ env.IMAGE_NAME }}:${{ github.run_id }} \
              && docker run --network test-network --rm -i grafana/k6 run - <testing/load/sum.js
-             && docker network rm test-network
 
   test-health-check:
     name: Curl health check endpoint
