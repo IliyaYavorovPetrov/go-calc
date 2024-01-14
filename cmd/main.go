@@ -3,7 +3,8 @@ package main
 import (
 	"encoding/json"
 	"github.com/IliyaYavorovPetrov/go-calc/app/math"
-	"io/ioutil"
+	"io"
+	"log"
 	"net"
 	"net/http"
 )
@@ -11,7 +12,7 @@ import (
 func getNumbers(r *http.Request) []int {
 	var numbers []int
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		return numbers
 	}
@@ -143,6 +144,7 @@ func main() {
 		Handler: AppRouter(),
 	}
 
+	log.Println("go-calc started")
 	if err := s.ListenAndServe(); err != nil {
 		panic(err)
 	}
