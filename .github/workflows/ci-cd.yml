@@ -15,7 +15,7 @@ env:
 jobs:
   build-test-image:
     name: Build test image
-    if: github.event_name == 'push' && github.event.ref != 'refs/heads/main'
+    if: github.event.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
 
     permissions:
