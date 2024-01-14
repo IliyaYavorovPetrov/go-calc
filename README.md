@@ -17,7 +17,7 @@ In this project, the **CI/CD** pipeline is divided into five phases:
 5. **Send notification in Slack chanel**
 
 
-# In-Depth Explonation of CI/CD Phases
+# In-Depth Explanation of CI/CD Phases
 
 - **First & Second Phases**
 
@@ -33,7 +33,7 @@ In this project, the **CI/CD** pipeline is divided into five phases:
 
    In the initial phase, a new image is generated in the format `ghcr.io/iypetrov/go-calc:<github-runner-id>`, and it's published to GHCR. This temporary image serves only for testing purposes and is intentionally excluded from being pushed to the main registry (**Docker Hub**) to avoid unnecessary clutter in the primary registry. 
 
-   In the second phase, four types of tests are conducted:
+   In the second phase, five types of tests are conducted:
 
    - **Linter Analysis:** 
    
@@ -50,6 +50,10 @@ In this project, the **CI/CD** pipeline is divided into five phases:
    - **Execution of Unit Tests:** 
    
       All default unit and benchmark tests are executed.
+
+  - **Execution of Load Tests:**
+
+      Spin up a container and initiate a K6 load test. The test succeeds if over 95% of requests are completed in less than 200 milliseconds, and the failed requests stay below 1%.
 
    - **Health-Check Test Performance:** 
    
