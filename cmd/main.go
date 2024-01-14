@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/IliyaYavorovPetrov/go-calc/app/math"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 )
@@ -123,6 +124,7 @@ func main() {
 		Handler: AppRouter(),
 	}
 
+	log.Println("go-calc started")
 	if err := s.ListenAndServe(); err != nil {
 		panic(err)
 	}
