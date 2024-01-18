@@ -55,6 +55,22 @@ func TestMul(t *testing.T) {
 	}
 }
 
+func TestDiv(t *testing.T) {
+	testCases := []struct {
+		numbers  []int
+		expected float64
+	}{
+		{[]int{10, 5}, 2.0},
+	}
+
+	for _, tc := range testCases {
+		result := Div(tc.numbers)
+		if result != tc.expected {
+			t.Errorf("Div(%v) returned %f, expected %f", tc.numbers, result, tc.expected)
+		}
+	}
+}
+
 func TestAnd(t *testing.T) {
 	testCases := []struct {
 		numbers  []int

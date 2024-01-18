@@ -35,6 +35,23 @@ func Mul(numbers []int) int {
 	return result
 }
 
+func Div(numbers []int) float64 {
+	result := 0.0
+	counter := 0
+
+	for _, num := range numbers {
+		if counter == 0 {
+			result = float64(num)
+		} else {
+			result /= float64(num)
+		}
+
+		counter++
+	}
+
+	return result
+}
+
 func And(numbers []int) int {
 	result := 0
 	counter := 0

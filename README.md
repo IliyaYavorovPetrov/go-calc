@@ -80,9 +80,9 @@ In this project, the **CI/CD** pipeline is divided into five phases:
 - To test if the app is working on production:
    ```
    curl -X POST \
-   -d '[1, 2, 3, 4, 5]' \
+   -d '[10, 5]' \
    -H "Content-Type: application/json" \
-   http://157.245.30.11:8080/sum
+   http://157.245.30.11:8080/div
    ```
 
 - To see all pods:

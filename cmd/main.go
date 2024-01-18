@@ -83,6 +83,29 @@ func AppRouter() http.Handler {
 		writeResult(w, result)
 	})
 
+	mux.HandleFunc("/div", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+
+		result := math.Div(getNumbers(r))
+
+		response := map[string]float64{"result": result}
+		responseJSON, err := json.Marshal(response)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, err = w.Write(responseJSON)
+		if err != nil {
+			return
+		}
+	})
+
 	mux.HandleFunc("/and", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
